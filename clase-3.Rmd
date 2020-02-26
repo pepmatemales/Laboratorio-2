@@ -1,0 +1,17 @@
+---
+title: "clase 3"
+author: "Pep Matemales"
+date: "26/2/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## VECTORES
+
+```{r}
+c(1,2,3)
+```
+
