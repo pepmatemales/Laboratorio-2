@@ -1,0 +1,56 @@
+---
+title: "clase 4"
+author: "Pep Matemales"
+date: "28/2/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data frames
+
+
+```{r}
+head(iris,3)
+
+tail(iris, 4)
+
+str(iris)
+
+names(iris)
+
+rownames(iris)
+colnames(iris)
+
+dimnames(iris)
+
+iris$Sepal.Width
+
+media=mean(iris$Sepal.Width)
+media
+
+
+#media de las sepal width de los iris de especie setosa
+m=mean(iris[iris$Species == "setosa", ]$Sepal.Width)
+m
+
+plot(iris[iris$Species == "setosa", ]$Sepal.Width)
+
+```
+
+
+
+```{r}
+str(Orange)
+```
+
+```{r}
+datos = read.table("https://maitra.public.iastate.edu/stat501/datasets/lizards.dat")
+
+datos
+```
+
+
+
