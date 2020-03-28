@@ -70,6 +70,8 @@ El campo NOC indica el país del ganador de la medalla. ¿Qué país puede presu
 
 ```{r}
 datostarea8[datostarea8$Year>=1960 & datostarea8$Year<=1996, ]$NOC
+
+
 ```
 
 
