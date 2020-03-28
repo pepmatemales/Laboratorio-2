@@ -1,0 +1,83 @@
+---
+title: "Tema5-2"
+author: "Pep Matemales"
+date: "28/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Data frames 2
+
+
+## Cargar data
+
+
+```{r}
+df=read.table("data/bulls.dat",
+              header=FALSE,
+              col.names=c("Breed", "Sale_price", "shoulder", "fat_free", 
+                          "percent_fat_free", "frame_scale", "back_fat",
+                          "sale_height","sale_weight"), 
+              sep="",
+              dec=".",
+              stringsAsFactors=TRUE
+              ) #leer datos en local y parametros
+
+#los valores anteriores de sep, dec y stringsasfactors son los valores por defecto
+head(df)
+
+
+df2=read.table("https://maitra.public.iastate.edu/stat501/datasets/lizards.dat",
+               header=FALSE,
+               col.names = c("Mass", "snout-vent length",
+                             "hind limb span")
+               ) #leer datos por su url
+head(df2)
+```
+
+
+## Exportar data
+```{r}
+write.table(df,file = "data/BullsData")
+```
+```{r}
+df3=read.table("data/BullsData", header=TRUE)
+head(df3)
+```
+
+
+## Construir data
+```{r}
+Algebra = c(1,2,0,5,4,6,7,5,5,8)
+Analysis = c(3,3,2,7,9,5,6,8,5,6)
+Statistics = c(4,5,4,8,8,9,6,7,9,10)
+grades = data.frame(Alg = Algebra, An = Analysis, Stat = Statistics)
+str(grades)
+grades
+```
+
+```{r}
+#modificar dataframes y añadir filas (video 81)
+```
+
+```{r}
+#añadir columnas
+Calculus = c(5,4,6,2,1,0,7,8,9,6)
+grades2 = cbind(grades, Calculus)
+head(grades2)
+
+#mas formas de añadir columnas y cambiar los tipos de datos (utilizando el $) (video 81)
+```
+
+```{r}
+# mas sobre sub data frames (eliminar factores sobrantes y funcion select y subset) (video 82)
+```
+
+
+
+
+
+

@@ -1,0 +1,40 @@
+---
+title: "clase5"
+author: "Pep Matemales"
+date: "11/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Clase 5
+
+```{r}
+vector=c(rep("Hombre",6),rep("Mujer",14))
+vector
+table(vector)
+prop.table(table(vector))
+names(which( table(vector)==max(table(vector)) ) )
+```
+
+
+
+```{r}
+datos=read.table("EnergyDrink",header=TRUE)
+
+datos
+summary(datos)
+table(datos)
+```
+
+
+```{r}
+ftable(datos)
+```
+
+```{r}
+barplot(table(datos$estudio))
+```
+

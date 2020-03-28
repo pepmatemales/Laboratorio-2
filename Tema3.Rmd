@@ -1,0 +1,278 @@
+---
+title: "clase 3"
+author: "Pep Matemales"
+date: "26/2/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# VECTORES
+
+```{r}
+c(1,2,3)
+```
+
+
+```{r}
+bolas=c(rep("Roja",7), rep("Azul",3))
+bolas
+```
+
+```{r}
+ano=c(rep(2001,10))
+ano
+```
+
+```{r}
+vec=c(16,0,1,20,1,7,88,5,1,9)
+vec
+```
+
+
+
+```{r}
+1:20
+```
+```{r}
+seq(2,by=2,length.out = 20)
+```
+
+
+```{r}
+round(seq(17,98,length.out = 30), 3)
+```
+
+
+
+```{r}
+x=1:10
+sapply(x,FUN = sin)
+
+length(x)
+max(x)
+min(x)
+
+sum(x)
+prod(x)
+
+mean(x)
+diff(x)
+
+cumsum(x)
+
+```
+
+```{r}
+cuadrao=function(x){x^2}
+v=c(1,2,3,4,5,6)
+sapply(v, FUN = cuadrao)
+cuadrao(v) #En este caso hemos podido aplicar la funcion directamente al vector,  pero  veces no se podra y necesitaremos el sapply
+```
+
+```{r}
+
+gg=c(1,77,4,9,54,12)
+sort(gg)
+
+gg_revertido=rev(gg)
+gg_revertido
+
+#Para obtener el vector ordenado decrecientemente
+rev(sort(gg))
+#otra opcion
+sort(gg, decreasing = TRUE)
+```
+
+
+
+## Subvectores
+
+```{r}
+gg[2]
+gg_revertido[2:5]
+```
+```{r}
+x=c(1, 4, 7, 2, 4, 99, 11, 234, 45, 2)
+x
+x[3]
+x[-3] #subvector sin la poscion 3
+x[-(3:5)] #subvector sin las posiciones 3, 4 y 5
+x[-c(3,5)] #subvector sin las posiciones 3 y 5
+x[x%%2==0] #subvector de los pares
+x[!(x%%2==0)] #subvector de los impares
+
+
+```
+
+```{r}
+z=c(x,1,1,10,10)
+z
+
+which.min(z) #Para obtener la posicion del minimo (ojo solo te obtiene el primero)
+which(z==min(z)) #Te obtiene las posiciones de las entradas con el valor minimo
+z[which.min(z)] #Para obtener el minimo
+
+
+which.max(z) #Para obtener la posicion del primer maximo
+which(z==max(z)) #Para obtener todas las posiciones q tienen el valor maximo
+z[which.max(z)]
+
+which(z%%2==0) #Posicion de los pares
+z[which(z%%2==0)] #Los pares
+z[z%%2==0] #En este caso mejor usar esta (mas corto)
+
+z[z%%2==0 & z>20] #Subvector de los pares mayores que 20
+
+```
+
+#(aqui falta el video de valores NA)
+#
+#
+#
+
+
+
+
+
+## Factores
+
+```{r}
+fac=factor(c(1,1,1,2,3,3,2,2,3,4,3,3,1,4),levels=c(1,2,3,4,5),
+           labels=c("Sus","Apr","Not","Exc","MH"))
+fac
+
+
+facOrd=ordered(c(1,1,1,2,3,3,2,2,3,4,3,3,1,4),levels=c(1,2,3,4,5),
+           labels=c("Sus","Apr","Not","Exc","MH"))
+facOrd
+
+```
+
+
+
+
+
+
+
+
+
+## Listas
+
+```{r}
+t=c(1,3,6,-7,8,3,-4,7,8,8)
+t
+lista=list(nombre="T", vector=t, media=mean(t), sumas=cumsum(x))
+lista
+
+lista$vector # para acceder a la componente 'vector' de la lista 'lista'
+
+```
+
+```{r}
+str(lista)
+names(lista)
+```
+
+
+
+
+
+
+
+
+## Matrices
+
+```{r}
+M=matrix(1:9, nrow=3, byrow = TRUE)
+N=matrix(1:9, nrow=3, byrow = FALSE)
+M
+N
+```
+
+```{r}
+rbind(c(1,5,3),c(2,6,3))
+diag(c(1,2,3,4,5))
+rbind(M, c(1,2,3), c(-1,-4,7)) #añadimos dos filas a la matriz M
+```
+
+#submatrices
+```{r}
+A=matrix(1:9, nrow=3, byrow = TRUE)
+A
+A[1,3] #entrada de la fila, 1 columna 2
+A[3,1] #entrada de la fila 3, columna 1
+A[1,]  #submatriz de la fila 1
+A[,1] #submatriz de la columna 1
+A[1:3,2:3] #submatriz de las filas 1,2,3 y columnas 2y3
+
+```
+
+```{r}
+diag(A)
+dim(A)
+nrow(A)
+ncol(A)
+```
+
+```{r}
+colSums(A)
+rowSums(A)
+colMeans(A)
+rowMeans(A)
+```
+
+
+```{r}
+B=matrix(1:9, nrow=3, byrow = TRUE)
+
+#MARGIN=1 es por filas y MARGIN=2 es por columnas y MARGIN=c(1,2) para aplicarla a todos los elementos
+apply(B,MARGIN = c(1,2), FUN = cuadrao)
+apply(B, MARGIN = 1, FUN=sum) #hace lo mismo que rowsums
+apply(B, MARGIN = c(1,2), FUN=sum) #no hace nada pq trata elemento a elemento
+apply(B, MARGIN = 1, FUN = cumsum) #sumas acumuladas por filas
+```
+
+```{r}
+#operciones con matrices
+X=rbind(c(1,4,2),c(7,7,4),c(-3,-9,5))
+X
+t(X) #traspuesta
+
+X+6 #suma por escalar
+
+X+t(X) #suma de matrices
+
+X*3 #producto por escalar
+
+X%*%t(X) #multiplicacion de matrices (han de coincidir el numero de columnas de la primera con el de filas de la segunda)
+
+#para elevar, se necesitan paquetes (mirar video 52 curso descriptiva)
+
+
+```
+
+```{r}
+#mas operaciones con matrices
+V=matrix(c(0,2,-3,0,1,0,1,2,0), nrow=3, byrow=T)
+V
+det(V)
+
+qr(V)$rank
+solve(V) #inversa
+solve(V,c(1,2,0)) #resolucion del sistema de matriz de coeficientes X, y con el vector 1,2,0 de terminos independientes
+```
+
+
+```{r}
+# cosas de algebra lineal (vaps y veps, descomposicion canonica (diagonalizacion)...)
+## video 52 curso descriptiva
+matrix(c("lol",1,"gg","ll"), nrow=2) #prueba
+
+```
+
+
+
+

@@ -371,11 +371,14 @@ summary {
 
 <div id="data-frames" class="section level2">
 <h2>Data frames</h2>
-<pre class="r"><code>head(iris,3)</code></pre>
+<pre class="r"><code>head(iris)</code></pre>
 <pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 ## 1          5.1         3.5          1.4         0.2  setosa
 ## 2          4.9         3.0          1.4         0.2  setosa
-## 3          4.7         3.2          1.3         0.2  setosa</code></pre>
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
 <pre class="r"><code>tail(iris, 4)</code></pre>
 <pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
 ## 147          6.3         2.5          5.0         1.9 virginica
@@ -391,6 +394,16 @@ summary {
 ##  $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
 <pre class="r"><code>names(iris)</code></pre>
 <pre><code>## [1] &quot;Sepal.Length&quot; &quot;Sepal.Width&quot;  &quot;Petal.Length&quot; &quot;Petal.Width&quot;  &quot;Species&quot;</code></pre>
+<pre class="r"><code>iris$Sepal.Width</code></pre>
+<pre><code>##   [1] 3.5 3.0 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 3.7 3.4 3.0 3.0 4.0 4.4 3.9 3.5
+##  [19] 3.8 3.8 3.4 3.7 3.6 3.3 3.4 3.0 3.4 3.5 3.4 3.2 3.1 3.4 4.1 4.2 3.1 3.2
+##  [37] 3.5 3.6 3.0 3.4 3.5 2.3 3.2 3.5 3.8 3.0 3.8 3.2 3.7 3.3 3.2 3.2 3.1 2.3
+##  [55] 2.8 2.8 3.3 2.4 2.9 2.7 2.0 3.0 2.2 2.9 2.9 3.1 3.0 2.7 2.2 2.5 3.2 2.8
+##  [73] 2.5 2.8 2.9 3.0 2.8 3.0 2.9 2.6 2.4 2.4 2.7 2.7 3.0 3.4 3.1 2.3 3.0 2.5
+##  [91] 2.6 3.0 2.6 2.3 2.7 3.0 2.9 2.9 2.5 2.8 3.3 2.7 3.0 2.9 3.0 3.0 2.5 2.9
+## [109] 2.5 3.6 3.2 2.7 3.0 2.5 2.8 3.2 3.0 3.8 2.6 2.2 3.2 2.8 2.8 2.7 3.3 3.2
+## [127] 2.8 3.0 2.8 3.0 2.8 3.8 2.8 2.8 2.6 3.0 3.4 3.1 3.0 3.1 3.1 3.1 2.7 3.2
+## [145] 3.3 3.0 2.5 3.0 3.4 3.0</code></pre>
 <pre class="r"><code>rownames(iris)</code></pre>
 <pre><code>##   [1] &quot;1&quot;   &quot;2&quot;   &quot;3&quot;   &quot;4&quot;   &quot;5&quot;   &quot;6&quot;   &quot;7&quot;   &quot;8&quot;   &quot;9&quot;   &quot;10&quot;  &quot;11&quot;  &quot;12&quot; 
 ##  [13] &quot;13&quot;  &quot;14&quot;  &quot;15&quot;  &quot;16&quot;  &quot;17&quot;  &quot;18&quot;  &quot;19&quot;  &quot;20&quot;  &quot;21&quot;  &quot;22&quot;  &quot;23&quot;  &quot;24&quot; 
@@ -425,16 +438,6 @@ summary {
 ## 
 ## [[2]]
 ## [1] &quot;Sepal.Length&quot; &quot;Sepal.Width&quot;  &quot;Petal.Length&quot; &quot;Petal.Width&quot;  &quot;Species&quot;</code></pre>
-<pre class="r"><code>iris$Sepal.Width</code></pre>
-<pre><code>##   [1] 3.5 3.0 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 3.7 3.4 3.0 3.0 4.0 4.4 3.9 3.5
-##  [19] 3.8 3.8 3.4 3.7 3.6 3.3 3.4 3.0 3.4 3.5 3.4 3.2 3.1 3.4 4.1 4.2 3.1 3.2
-##  [37] 3.5 3.6 3.0 3.4 3.5 2.3 3.2 3.5 3.8 3.0 3.8 3.2 3.7 3.3 3.2 3.2 3.1 2.3
-##  [55] 2.8 2.8 3.3 2.4 2.9 2.7 2.0 3.0 2.2 2.9 2.9 3.1 3.0 2.7 2.2 2.5 3.2 2.8
-##  [73] 2.5 2.8 2.9 3.0 2.8 3.0 2.9 2.6 2.4 2.4 2.7 2.7 3.0 3.4 3.1 2.3 3.0 2.5
-##  [91] 2.6 3.0 2.6 2.3 2.7 3.0 2.9 2.9 2.5 2.8 3.3 2.7 3.0 2.9 3.0 3.0 2.5 2.9
-## [109] 2.5 3.6 3.2 2.7 3.0 2.5 2.8 3.2 3.0 3.8 2.6 2.2 3.2 2.8 2.8 2.7 3.3 3.2
-## [127] 2.8 3.0 2.8 3.0 2.8 3.8 2.8 2.8 2.6 3.0 3.4 3.1 3.0 3.1 3.1 3.1 2.7 3.2
-## [145] 3.3 3.0 2.5 3.0 3.4 3.0</code></pre>
 <pre class="r"><code>media=mean(iris$Sepal.Width)
 media</code></pre>
 <pre><code>## [1] 3.057333</code></pre>
@@ -457,35 +460,59 @@ m</code></pre>
 ##  - attr(*, &quot;units&quot;)=List of 2
 ##   ..$ x: chr &quot;(days)&quot;
 ##   ..$ y: chr &quot;(mm)&quot;</code></pre>
-<pre class="r"><code>lizards = read.table(&quot;https://maitra.public.iastate.edu/stat501/datasets/lizards.dat&quot;)
+<pre class="r"><code>str(Orange)</code></pre>
+<pre><code>## Classes &#39;nfnGroupedData&#39;, &#39;nfGroupedData&#39;, &#39;groupedData&#39; and &#39;data.frame&#39;:   35 obs. of  3 variables:
+##  $ Tree         : Ord.factor w/ 5 levels &quot;3&quot;&lt;&quot;1&quot;&lt;&quot;5&quot;&lt;&quot;2&quot;&lt;..: 2 2 2 2 2 2 2 4 4 4 ...
+##  $ age          : num  118 484 664 1004 1231 ...
+##  $ circumference: num  30 58 87 115 120 142 145 33 69 111 ...
+##  - attr(*, &quot;formula&quot;)=Class &#39;formula&#39;  language circumference ~ age | Tree
+##   .. ..- attr(*, &quot;.Environment&quot;)=&lt;environment: R_EmptyEnv&gt; 
+##  - attr(*, &quot;labels&quot;)=List of 2
+##   ..$ x: chr &quot;Time since December 31, 1968&quot;
+##   ..$ y: chr &quot;Trunk circumference&quot;
+##  - attr(*, &quot;units&quot;)=List of 2
+##   ..$ x: chr &quot;(days)&quot;
+##   ..$ y: chr &quot;(mm)&quot;</code></pre>
+<pre class="r"><code>Orange</code></pre>
+<pre><code>##    Tree  age circumference
+## 1     1  118            30
+## 2     1  484            58
+## 3     1  664            87
+## 4     1 1004           115
+## 5     1 1231           120
+## 6     1 1372           142
+## 7     1 1582           145
+## 8     2  118            33
+## 9     2  484            69
+## 10    2  664           111
+## 11    2 1004           156
+## 12    2 1231           172
+## 13    2 1372           203
+## 14    2 1582           203
+## 15    3  118            30
+## 16    3  484            51
+## 17    3  664            75
+## 18    3 1004           108
+## 19    3 1231           115
+## 20    3 1372           139
+## 21    3 1582           140
+## 22    4  118            32
+## 23    4  484            62
+## 24    4  664           112
+## 25    4 1004           167
+## 26    4 1231           179
+## 27    4 1372           209
+## 28    4 1582           214
+## 29    5  118            30
+## 30    5  484            49
+## 31    5  664            81
+## 32    5 1004           125
+## 33    5 1231           142
+## 34    5 1372           174
+## 35    5 1582           177</code></pre>
+<pre class="r"><code>#datos = read.table(&quot;&quot;)
 
-lizards</code></pre>
-<pre><code>##        V1   V2    V3
-## 1   5.526 59.0 113.5
-## 2  10.401 75.0 142.0
-## 3   9.213 69.0 124.0
-## 4   8.953 67.5 125.0
-## 5   7.063 62.0 129.5
-## 6   6.610 62.0 123.0
-## 7  11.273 74.0 140.0
-## 8   2.447 47.0  97.0
-## 9  15.493 86.5 162.0
-## 10  9.004 69.0 126.5
-## 11  8.199 70.5 136.0
-## 12  6.601 64.5 116.0
-## 13  7.622 67.5 135.0
-## 14 10.067 73.0 136.5
-## 15 10.091 73.0 135.5
-## 16 10.888 77.0 139.0
-## 17  7.610 61.5 118.0
-## 18  7.733 66.5 133.5
-## 19 12.015 79.5 150.0
-## 20 10.049 74.0 137.0
-## 21  5.149 59.5 116.0
-## 22  9.158 68.0 123.0
-## 23 12.132 75.0 141.0
-## 24  6.978 66.5 117.0
-## 25  6.890 63.0 117.0</code></pre>
+#datos</code></pre>
 </div>
 
 

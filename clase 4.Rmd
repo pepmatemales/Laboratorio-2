@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r}
-head(iris,3)
+head(iris)
 
 tail(iris, 4)
 
@@ -21,13 +21,21 @@ str(iris)
 
 names(iris)
 
+
+
+iris$Sepal.Width
+
+
+```
+
+```{r}
 rownames(iris)
 colnames(iris)
 
 dimnames(iris)
+```
 
-iris$Sepal.Width
-
+```{r}
 media=mean(iris$Sepal.Width)
 media
 
@@ -35,9 +43,10 @@ media
 #media de las sepal width de los iris de especie setosa
 m=mean(iris[iris$Species == "setosa", ]$Sepal.Width)
 m
+```
 
+```{r}
 plot(iris[iris$Species == "setosa", ]$Sepal.Width)
-
 ```
 
 
@@ -47,9 +56,15 @@ str(Orange)
 ```
 
 ```{r}
-datos = read.table("https://maitra.public.iastate.edu/stat501/datasets/lizards.dat")
+str(Orange)
+Orange
+```
 
-datos
+
+```{r}
+#datos = read.table("")
+
+#datos
 ```
 
 

@@ -1,0 +1,78 @@
+---
+title: "Tema5(Tarea)"
+author: "Pep Matemales"
+date: "28/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Tarea T5
+
+Carga en R o en Python el CSV de la web http://winterolympicsmedals.com/medals.csv y responde a las preguntas de la tarea.
+
+Preguntas de esta tarea
+¿Cuantos deportistas aparecen en el data frame?
+
+¿Cuantos han ganado medallas de oro, cuantos de plata y cuantos de bronce?
+
+¿En cuantos lugares se han hecho olimpiadas de invierno?
+
+¿Cuantos hombres y cuantas mujeres hay?
+
+¿En qué año participaron más deportistas?
+
+El campo NOC indica el país del ganador de la medalla. ¿Qué país puede presumir de haber ganado más medallas de oro en los juegos de invierno entre 1960 y 1996?
+
+```{r}
+datostarea8=read.csv("http://winterolympicsmedals.com/medals.csv")
+str(datostarea8)
+head(datostarea8)
+tail(datostarea8)
+
+```
+
+¿Cuantos deportistas aparecen en el data frame?
+```{r}
+nrow(datostarea8)
+```
+
+¿Cuantos han ganado medallas de oro, cuantos de plata y cuantos de bronce?
+```{r}
+nrow(datostarea8[datostarea8$Medal=="Gold",] )
+nrow(datostarea8[datostarea8$Medal=="Silver",] )
+nrow(datostarea8[datostarea8$Medal=="Bronze",] )
+```
+
+¿En cuantos lugares se han hecho olimpiadas de invierno?
+```{r}
+length(levels(datostarea8$City))
+```
+
+¿Cuantos hombres y cuantas mujeres hay?
+```{r}
+nrow(datostarea8[datostarea8$Event.gender=="M", ] ) #hombres
+nrow(datostarea8[datostarea8$Event.gender=="W", ] ) #mujeres
+nrow(datostarea8[datostarea8$Event.gender=="X", ] ) #mixto
+#entonces habria 1386+123 hombres y 802+123 mujeres
+#tambien nos faltaria tener en cuenta que hay deportes que pone four-man
+```
+
+¿En qué año participaron más deportistas?
+```{r}
+as.factor(datostarea8$Year)
+
+```
+
+El campo NOC indica el país del ganador de la medalla. ¿Qué país puede presumir de haber ganado más medallas de oro en los juegos de invierno entre 1960 y 1996?
+
+```{r}
+datostarea8[datostarea8$Year>=1960 & datostarea8$Year<=1996, ]$NOC
+```
+
+
+
+
+

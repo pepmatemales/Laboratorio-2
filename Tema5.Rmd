@@ -1,0 +1,79 @@
+---
+title: "Tema5(Mio)"
+author: "Pep Matemales"
+date: "28/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Data Frames
+
+
+```{r}
+datos = iris #usaremos una copia del data frame 'iris'
+datos #te imprime todo el data frame
+```
+
+
+##Obteniendo informacion del data frame
+```{r}
+head(datos, 5) #te muestra las 5 primeras filas del df
+tail(datos, 3) #te muestra las 3 ultimas filas del df
+str(datos) #te hace un resumen de la estructura del df
+names(datos) # te muestra los nombres de las columnas del df
+```
+
+
+```{r}
+rownames(datos) # te muestra los nombres de las filas (los individuos/observaciones)
+colnames(datos) #es lo mismo que la funcion names(datos)
+dimnames(datos) #junta las dos anteriores
+```
+
+```{r}
+nrow(datos) #numero de filas (numero de observaciones/individuos)
+ncol #numero de columnas 
+dim(datos) #los dos anteriores
+```
+
+
+```{r}
+datos$Sepal.Length #te devuelve el vector de todas las Sepal.lenght
+datos$Sepal.Length[1:10] #como es un vector podemos sacar por ejemplo el subvector de los 10 primeros elementos
+
+datos$Species #te devuelve el factor (ya que asi lo pone en la estructura) de las Species
+datos$Species[1:10] #con los factores tambien se puede acceder a subfactores
+```
+
+
+## Sub-data Frames
+```{r}
+datos[1:10, ] #para acceder al subdataframe de la filas 1 a la 10, y todas las columnas.
+datos[1:10, 2:4] #para acceder al subdataframe de la filas 1 a la 10 y columnas 2,3,4.
+
+
+datos[datos$Species == "setosa" & datos$Sepal.Width> 4, ] #para acceder al subdataframe de las observaciones que cumplen ser setosa y de sepalo>4.
+#IMPORTANTE, esta condicion se impone a las filas, por lo que hay que poner la coma y nada en las columnas (a no ser que queramos).
+
+datos[datos$Species == "setosa" & datos$Sepal.Width> 4, ][c(1,3),c(2,5)] #como es un subdataframe, podemos acceder a un subdataframe de este subdf, en este caso al de filas 1y3 y columnas 2y5
+```
+
+```{r}
+datos[,c("Species","Sepal.Width")] #para obtener el subdataframe de estas columnas
+```
+
+```{r}
+mean(datos$Sepal.Width) #media de los sepalos
+
+mean(datos[datos$Species=="setosa", 2]) #la media de la columna 2(sepal.width) del subdataframe de species=setosa #igual q el proximo
+mean(datos[datos$Species=="setosa", ]$Sepal.Width) #la media de los sepalos de aquellos que son setosa
+```
+
+
+
+
+
+

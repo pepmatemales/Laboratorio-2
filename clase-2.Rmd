@@ -22,14 +22,9 @@ legend("bottomleft",col=c("blue","green","purple"),
      legend=c("Seno","Coseno", "Tangente"), lwd=3, bty="l")
 ```
 
-
-
 ```{python}
-#no hacer knit que falla!!!!
-
 print(1+1)
 ```
-
 
 
 $$
