@@ -1,0 +1,104 @@
+---
+title: "Tema6-5(Graficos)"
+author: "Pep Matemales"
+date: "29/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Diagrama de barras
+
+## Un unico vector
+```{r}
+Respuestas=factor(sample(c("Si", "No"), size = 12, replace = TRUE)) 
+Respuestas
+Sexo= sample(c("H", "M"), size = length(Respuestas), replace = T) #H = hombre, M = mujer
+Sexo
+```
+```{r}
+barplot(table(Sexo), col=c("lightblue","pink"), main="Diagrama de barras de 
+las frecuencias absolutas\n de la variable \"Sexo\"")
+```
+```{r}
+barplot(prop.table(table(Respuestas)), main="Diagrama de barras de frecuencias 
+        relativas\n de la variable \"Respuestas\"")
+```
+```{r}
+par(mfrow=c(1,2))
+barplot(table(Respuestas), col=c("green"))
+barplot(table(Respuestas), col=c("red","blue"))
+par(mfrow = c(1,1))
+```
+```{r}
+barplot(table(Respuestas), horiz=TRUE)
+```
+
+## De tablas bidimensionales
+```{r}
+barplot(table(Sexo,Respuestas), legend.text = TRUE)
+barplot(table(Sexo,Respuestas), beside=TRUE, legend.text=TRUE)
+```
+```{r}
+barplot(table(Respuestas,Sexo), beside=TRUE, names=c("Men", "Women"), 
+        col=c("yellow","lightblue"), legend.text=c("No","Yes"))
+```
+
+
+
+# Diagrama circular (pie chart)
+```{r}
+x = sample(1:5, size = 12, replace = TRUE)
+x
+pie(table(x), main="Diagrama circular de la variable x")
+```
+```{r}
+Respuestas
+pie(table(Respuestas), main="Diagrama circular de Respuestas")
+```
+
+
+
+
+
+# Diagrama de mosaico
+
+## Bidimensional
+En concreto, para obtener el gráfico de mosaico de una tabla bidimensional, se parte de un cuadrado de lado 1, primero se divide en barras verticales de amplitudes iguales a las frecuencias relativas de una variable, y luego cada barra se divide, a lo alto, en regiones de alturas proporcionales a las frecuencias relativas marginales de cada nivel de la otra variable, dentro del nivel correspondiente de la primera variable.
+
+```{r}
+plot(table(Sexo,Respuestas), main="Gráfico de mosaico de las variables
+     \"Sexo\" y \"Respuestas\"")
+```
+
+
+## Tridimensional
+En el gráfico de mosaico de una tabla tridimensional, primero se divide el cuadrado en barras verticales de amplitudes iguales a las frecuencias relativas de una variable.
+
+Luego cada barra se divide, a lo alto, en regiones de alturas proporcionales a las frecuencias relativas marginales de cada nivel de una segunda variable, dentro del nivel correspondiente de la primera variable.
+
+Finalmente, cada sector rectangular se vuelve a dividir a lo ancho en regiones de amplitudes proporcionales a las frecuencias relativas marginales de cada nivel de la tercera variable dentro de la combinación correspondiente de niveles de las otras dos.
+```{r}
+plot(HairEyeColor, main="Gráfico de mosaico de la tabla HairEyeColor", 
+     col=c("pink","lightblue"))
+```
+
+
+
+
+
+## Pruebas
+```{r}
+Beb_Energ=read.table("EnergyDrink", header = TRUE) #cargamos el data frame que esta en nuestra carpeta de trabajo
+barplot(table(Beb_Energ[c(2,1)]), legend.text = TRUE)
+```
+
+
+
+
+
+
+
+

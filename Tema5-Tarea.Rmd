@@ -62,15 +62,16 @@ nrow(datostarea8[datostarea8$Event.gender=="X", ] ) #mixto
 
 ¿En qué año participaron más deportistas?
 ```{r}
-as.factor(datostarea8$Year)
+names(which(table(datostarea8$Year)==max(table(datostarea8$Year))))
 
 ```
 
 El campo NOC indica el país del ganador de la medalla. ¿Qué país puede presumir de haber ganado más medallas de oro en los juegos de invierno entre 1960 y 1996?
 
 ```{r}
-datostarea8[datostarea8$Year>=1960 & datostarea8$Year<=1996, ]$NOC
+table(datostarea8[datostarea8$Year>=1960 & datostarea8$Year<=1996, ]$NOC)
 
+names(which( table(datostarea8[datostarea8$Year>=1960 & datostarea8$Year<=1996, ]$NOC) == max( table(datostarea8[datostarea8$Year>=1960 & datostarea8$Year<=1996, ]$NOC)) ))
 
 ```
 

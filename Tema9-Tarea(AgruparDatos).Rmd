@@ -1,0 +1,169 @@
+---
+title: "Tema9-Tarea(AgruparDatos)"
+author: "Pep Matemales"
+date: "31/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Tarea 13 (Tema 9)
+
+Da el algoritmo para reproducir el proceso de generación de clases y sus marcas respectivo para el número de clases obtenido con la regla de la raíz en R
+
+### Cargamos los datos
+```{r}
+datostarea13=read.table("data/datacrab.txt", header=TRUE)
+str(datostarea13)
+cw=datostarea13$width #vamos a agrupar las aunchuras de los cangrejos
+```
+
+### Decidiendo las clases
+```{r}
+#Lo haremos con la regla de la raiz
+n = length(cw)
+n
+k1 = ceiling(sqrt(n))
+k1
+```
+
+### Amplitud
+```{r}
+diff(range(cw)) #diferencia entre el maximo y el minimo
+
+amplitudfalsa=diff(range(cw))/k1
+amplitudfalsa
+
+amplitud=0.9 #Como nuestros datos están expresados en mm con una precisión de una cifra decimal, debemos redondear por exceso a un cifra decimal el resultado obtenido
+amplitud
+```
+
+### Extremos intervalos
+```{r}
+L1=min(cw)-(1/2)*0.1 #donde 0.1 es nuestra precisión (décimas de unidad, en este caso)
+L=L1+amplitud*(0:k1)
+L #todos los  extremos
+```
+
+### Marcas de clase
+```{r}
+X1 = (L[1]+L[2])/2
+X=X1+ amplitud * (0:(k1-1))
+X #todas las marcas de clase
+```
+
+
+
+
+
+#### Prueba  funcion cut (NO TAREA)
+```{r}
+table(cw)
+cut(cw, breaks = L, right=FALSE)
+table(cut(cw, breaks = L, right=FALSE))
+```
+
+
+
+## Continuación (NO TAREA) 
+```{r}
+#Hagamos las frecuencias
+
+TablaFrecs = function(x,k,A,p){ 
+  L = min(x)-p/2+A*(0:k)
+  x_cut = cut(x, breaks = L, right=FALSE)
+  intervals = levels(x_cut)
+  mc = (L[1]+L[2])/2+A*(0:(k-1))
+  Fr.abs = as.vector(table(x_cut)) 
+  Fr.rel = round(Fr.abs/length(x),4) 
+  Fr.cum.abs = cumsum(Fr.abs) 
+  Fr.cum.rel = cumsum(Fr.rel)
+  tabla = data.frame(intervals, mc, Fr.abs, Fr.cum.abs, Fr.rel, Fr.cum.rel)
+  tabla
+}
+
+TablaFrecs.L = function(x,L,V){
+  x_cut = cut(x, breaks=L, right=FALSE, include.lowest=V)
+  intervals = levels(x_cut)
+  mc = (L[1:(length(L)-1)]+L[2:length(L)])/2
+  Fr.abs = as.vector(table(x_cut)) 
+  Fr.rel = round(Fr.abs/length(x),4)
+  Fr.cum.abs = cumsum(Fr.abs)
+  Fr.cum.rel = cumsum(Fr.rel)
+  tabla = data.frame(intervals, mc, Fr.abs, Fr.cum.abs, Fr.rel, Fr.cum.rel)
+  tabla
+}
+
+
+#Ejemplo en nuestro caso
+TablaFrecs(cw, k = k1, A = amplitud, p = 0.1)
+TablaFrecs.L(cw, L, FALSE)
+```
+
+
+## Estadisticos con datos agrupados
+```{r}
+cw
+tabla=TablaFrecs.L(cw, L, FALSE)
+tabla
+```
+
+```{r}
+TOT = tabla$Fr.cum.abs[14]
+TOT
+
+anchura.media = round(sum(tabla$Fr.abs*tabla$mc)/TOT,3)
+anchura.media #Media
+
+anchura.var = round(sum(tabla$Fr.abs*tabla$mc^2)/TOT-anchura.media^2,3)
+anchura.var #Varianza
+
+anchura.dt = round(sqrt(anchura.var),3)
+anchura.dt #Desviación típica
+
+I.modal = tabla$intervals[which(tabla$Fr.abs == max(tabla$Fr.abs))]
+I.modal #Intervalo modal
+
+I.critic = tabla$intervals[which(tabla$Fr.cum.rel >= 0.5)]
+I.critic[1] #Intervalo critico
+
+```
+
+```{r}
+#Ahora, ya podemos calcular una estimación de la mediana de los datos “reales”.
+
+n = TOT
+Lc = L[6] #ya que nos ha salido q la mediana esta en este intervalo
+Lc.pos = L[7]
+Ac = L[7]-L[6]
+Nc.ant = tabla$Fr.cum.abs[5]
+nc = tabla$Fr.abs[6]
+M = Lc+Ac*((n/2)-Nc.ant)/nc
+M #Aproximación de la mediana de los datos "reales"
+
+
+aprox.quantile.p = function(Lcrit,Acrit,n,p,Ncrit.ant,ncrit){
+  round(Lcrit+Acrit*(p*n-Ncrit.ant)/ncrit,3)
+}
+aprox.quantile.p(Lc,Ac,n,0.25,Nc.ant,nc) #Primer cuartil
+aprox.quantile.p(Lc,Ac,n,0.75,Nc.ant,nc) #Tercer cuartil
+
+
+median(cw) #Mediana de los datos "reales"
+quantile(cw,0.25) #primer cuartil real
+quantile(cw,0.75) #tercer cuartil real
+
+```
+
+
+
+```{r}
+h = hist(cw, breaks=L, right=FALSE , plot=FALSE)
+```
+
+
+
+
+

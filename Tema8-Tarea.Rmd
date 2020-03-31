@@ -1,0 +1,137 @@
+---
+title: "Tema8-Tarea"
+author: "Pep Matemales"
+date: "30/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Tarea T8 (12)
+Carga el conjunto de datos de la carpeta data llamado grades.txt en R y responde a las siguientes preguntas
+
+Preguntas de esta tarea
+-Calcula la media, la mediana y la moda redondeada a dos cifras decimales de las notas numéricas de los exámenes tanto de forma conjunta como por estudio universitario. ¿En qué grupo observamos la nota más alta? ¿Qué grupo está por encima de la media de estudiantes?
+
+-¿En qué grupo observamos más variación de notas? Justifica tu respuesta
+
+-¿Hay mucha diferencia entre el grupo que has respondido en el ejercicio 1 y en el ejercicio 2? Intenta dar una explicación objetiva del suceso
+
+-Dibuja en un único gráfico los cuatro diagramas de caja, uno para cada grupo. Añade así mismo la nota media, pon nombre, título y color al gráfico para documentar el gráfico correctamente.
+
+-¿Observas algunos valores atípicos en el boxplot anterior? ¿A qué grupo pertence?
+
+-Indica a partir del boxplot anterior en qué grupo observamos más variedad de notas.
+
+-En base a todo lo anterior, ¿puedes afirmar de forma estadística que el examen de carrera ha ido mejor en algún estudio que en los demás?
+
+
+
+
+```{r}
+#cargamos datos
+datostarea12=read.table("../r-basic/data/grades.txt")
+str(datostarea12)
+head(datostarea12)
+```
+
+
+
+
+1. Calcula la media, la mediana y la moda redondeada a dos cifras decimales de las notas numéricas de los exámenes tanto de forma conjunta como por estudio universitario. ¿En qué grupo observamos la nota más alta? ¿Qué grupo está por encima de la media de estudiantes?
+
+```{r}
+#Globales
+round(mean(datostarea12$nota),2) #media global
+round(median(datostarea12$nota),2) #mediana global
+as.numeric(names(which(table(datostarea12$nota)==max(table(datostarea12$nota))))) #moda global
+```
+
+```{r}
+#Media y mediana por estudio
+round(by(datostarea12$nota, datostarea12$estudio, FUN=mean),2) #media de cada estudio
+round(by(datostarea12$nota, datostarea12$estudio, FUN=median),2) #mediana de cada estudio
+```
+
+```{r}
+#Moda por estudio
+funmoda=function(x){as.numeric(names(which(table(round(x,2))==max(table(round(x,2))))))} #redondeamos las notas ya dentro del vector ya sino nos salen un monton de modas, ya que no se repite ninguna nota (excepto en industriales que es solo el 0). De esta forma agrupamos algunas notas en la misma y obtenemos las moda (1 o mas de 1, pero no 50 o 60 que salian antes)
+by(datostarea12$nota, datostarea12$estudio, FUN=funmoda) #moda por estudio
+```
+
+```{r}
+#Nota maxima de cada estudio
+by(datostarea12$nota, datostarea12$estudio, FUN=max)
+
+#Nota maxima global
+datostarea12[which(datostarea12$nota==max(datostarea12$nota)) , ] #sacamos la mejor nota y de que estudio es (hay que hacer knit para verlo)
+
+
+names(which(by(datostarea12$nota, datostarea12$estudio, FUN=mean)>=mean(datostarea12$nota))) #¿Qué grupo está por encima de la media de estudiantes?
+```
+
+
+
+
+2. ¿En qué grupo observamos más variación de notas? Justifica tu respuesta
+```{r}
+round(by(datostarea12$nota, datostarea12$estudio, FUN=sd),2) #observemos que en mates es donde hay mas desviacion tipica (2,2), es decir, varian mas las notas
+```
+
+
+3. ¿Hay mucha diferencia entre el grupo que has respondido en el ejercicio 1 y en el ejercicio 2? Intenta dar una explicación objetiva del suceso.
+En el ejercicio 1 ha salido Industrial y en el 2 Mates. Si los comparamos, vemos que Mates tiene mejor media que Industrial pero tmb mas desviacion tipica, entonces en mates hay gente muy buena, pero tmb gente muy mala, en cambio en industrial esta diferencia no es tan grande, pero aun asi se encuentran por debajo de los matematicos.
+
+
+
+
+
+4. Dibuja en un único gráfico los cuatro diagramas de caja, uno para cada grupo. Añade así mismo la nota media, pon nombre, título y color al gráfico para documentar el gráfico correctamente.
+```{r}
+boxplot(nota~estudio, data=datostarea12, col=c("pink","yellow","green","lightblue"),
+        xlab="Estudio", ylab="Nota", main="Diagrama de notas segun estudio")
+medias = aggregate(nota~estudio, data = datostarea12, FUN = mean)
+medias
+points(medias, col = "black", pch = 15)
+
+```
+
+
+
+
+
+5.¿Observas algunos valores atípicos en el boxplot anterior? ¿A qué grupo pertence?
+```{r}
+str(boxplot(nota~estudio, data=datostarea12))
+#de aqui (y mirando en el grafico), observamos que en industrial hay un valor atipico, 10.02, en informatica otro, 8.52, y en telematica otro, 9.29.
+```
+
+
+
+6. Indica a partir del boxplot anterior en qué grupo observamos más variedad de notas.
+
+Se ve claro que es en mates donde hay mas variacion de notas pq el rango intercuartilico es mayor.
+
+
+
+7. En base a todo lo anterior, ¿puedes afirmar de forma estadística que el examen de carrera ha ido mejor en algún estudio que en los demás?
+
+Yo diria que esta entre los de informatica y los de mates.
+Pero para mi, a los que les ha ido mejor en conjunto es a los de informatica ya que aunque tengan un poco menos de media que los de mates, observamos que su desviacion tipica no es tan alta como la de los matematicos, es decir que a todos les ha ido masomenos bien, mientras que en mates encontramos que a muchos les ha ido muy bien y a otros muy mal.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

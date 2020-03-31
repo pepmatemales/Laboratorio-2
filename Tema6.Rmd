@@ -1,0 +1,155 @@
+---
+title: "Tema6"
+author: "Pep Matemales"
+date: "29/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Estadistica descriptiva con datos cualitativos
+
+
+## Funcion table (Tabla de frecuencias absolutas)
+```{r}
+x = sample(1:5, size = 12, replace = TRUE)
+x
+Respuestas=factor(sample(c("Si", "No"), size = 12, replace = TRUE)) 
+Respuestas
+```
+
+```{r}
+table(x)
+table(Respuestas)
+```
+
+```{r}
+names(table(x))
+names(table(Respuestas))
+```
+
+```{r}
+z=factor(x, levels=1:7) #Los niveles serán 1,2,3,4,5,6,7 
+z
+table(z)
+```
+
+```{r}
+table(x)[3] #La tercera columna de table(x)
+table(x)["7"] #¿La columna de table(x) con nombre 7?
+table(x)["5"] #La columna de table(x) con nombre 5
+3*table(x)[2] #El triple de la segunda columna de table(x)
+```
+
+```{r}
+sum(table(x)) #Suma de las entradas de table(x)
+sqrt(table(Respuestas)) #Raíces cuadradas de las entradas de table(Respuestas)
+```
+
+
+## Funcion prop.table al table (Tabla de frecuencias relativas)
+```{r}
+prop.table(table(x))
+prop.table(table(Respuestas))
+```
+
+```{r}
+#ejemplo de ojo usar prop.table sin el table
+X=c(1,1,1)
+X
+prop.table(table(X))
+prop.table(X)
+```
+
+```{r}
+#otra forma de calcular la tabla de frecuencias relativas
+table(x)/length(x)
+table(Respuestas)/length(Respuestas)
+```
+
+## Moda
+```{r}
+#para hallar los niveles que tienen frecuencia absoluta n en x.
+table(x)
+names(which(table(x)==1))
+names(which(table(x)==max(table(x)))) #moda
+names(which(table(Respuestas)==max(table(Respuestas)))) #moda
+```
+
+## Ejercicio
+Recuperad el ejemplo de los 6 hombres y las 14 mujeres anterior y utilizando R, calculad su tabla de frecuencias absolutas, su tabla de frecuencias relativas y la moda.
+
+```{r}
+vector=c(rep("Hombre",6),rep("Mujer",14))
+vector
+table(vector)
+prop.table(table(vector))
+names(which( table(vector)==max(table(vector)) )) #moda
+```
+
+
+
+
+
+## Tablas de Frecuencias bidimensionales
+Supongamos que el vector Respuestas anterior contiene las respuestas a una pregunta dadas por unos individuos cuyos sexos tenemos almacenados en un vector Sexo, en el mismo orden que sus respuestas. En este caso, podemos construir una tabla que nos diga cuántas personas de cada sexo han dado cada respuesta.
+
+```{r}
+Respuestas
+Sexo= sample(c("H", "M"), size = length(Respuestas), replace = T) #H = hombre, M = mujer
+Sexo
+table(Respuestas ,Sexo)
+table(Sexo, Respuestas) #igual que hacer t(table(Respuestas,Sexo)) (traspuesta)
+```
+
+```{r}
+table(Respuestas ,Sexo)[1,2]
+table(Respuestas ,Sexo)["No","M"]
+```
+
+### Tablas bidimensionales de frecuencias relativas
+La tabla de frecuencias relativas globales se calcula aplicando sin más la función prop.table() a la table.
+```{r}
+prop.table(table(Sexo,Respuestas)) #Global
+
+```
+Para obtener las marginales, debemos usar el parámetro margin al aplicar la función prop.table() a la table. Con margin=1 obtenemos las frecuencias relativas de las filas y con margin=2, de las columnas.
+```{r}
+prop.table(table(Sexo,Respuestas), margin=1) #Por sexo
+prop.table(table(Sexo,Respuestas), margin=2) #Por respuesta
+```
+
+
+##  Paquete `gmodels`
+```{r}
+library(gmodels)
+sex = factor(c("H", "M", "M", "M", "H", "H", "M", "M"))
+ans = factor(c("S", "N", "S", "S", "S", "N", "N", "S"))
+CrossTable(sex, ans, prop.chisq = FALSE)
+```
+
+### Mas funciones aplicadas a tablas bidimensionales
+```{r}
+tt <- table(sex, ans) #para no tener que escribir todo el rato table(sex,ans)
+tt# Frec. absolutas
+prop.table(tt)#Frec. Rel. Global
+prop.table(tt, margin = 1)#Frec. Rel. Por cada sexo
+prop.table(tt, margin = 2)#Frec. Rel. Por cada respuesta
+
+colSums(tt)
+rowSums(tt)
+colSums(prop.table(tt))
+rowSums(prop.table(tt))
+
+apply(tt, FUN = sum, MARGIN = 1)
+apply(tt, FUN = sqrt, MARGIN = c(1,2))
+```
+
+
+
+
+
+
+

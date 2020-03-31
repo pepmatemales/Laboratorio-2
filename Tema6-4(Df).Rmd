@@ -1,0 +1,66 @@
+---
+title: "Tema6-4(Df)"
+author: "Pep Matemales"
+date: "29/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Tablas a partir de data frames de variables cualitativas
+
+Este fichero consiste en una tabla de datos con la siguiente información sobre 122 estudiantes de una Universidad de España: su sexo (variable sexo), el estudio en el que están matriculados (variable estudio) y si consumen habitualmente bebidas energéticas para estudiar (variable bebe).
+
+```{r}
+Beb_Energ=read.table("EnergyDrink", header = TRUE) #cargamos el data frame que esta en nuestra carpeta de trabajo
+str(Beb_Energ)
+head(Beb_Energ)
+```
+
+
+## Funcion summary (resumen)
+Aplicando la función summary() a un data frame de variables cualitativas, obtenemos, a modo de resumen, una tabla con las frecuencias absolutas de cada variable.
+```{r}
+summary(Beb_Energ)
+```
+
+Esta tabla sólo sirve para ver la información, porque sus entradas son palabras.
+```{r}
+summary(Beb_Energ)[,2]
+```
+
+
+## Table (tabla frec. abs.) de cada variable
+Para calcular en un solo paso la table de cada variable, podemos usar la función apply() de la manera siguiente:
+```{r}
+apply(Beb_Energ, MARGIN=2, FUN=table)
+```
+De esta manera, obtenemos una list cuyas componentes son las tablas que queríamos.
+
+```{r}
+apply(Beb_Energ,MARGIN=2,FUN=table)$sexo #para acceder a una de ellas
+table(Beb_Energ$sexo) #otra forma de hacer la tbala de una de las variables
+```
+
+
+## Table del data frame (y subdataframe)
+Si aplicamos la función table() a un data frame de variables cualitativas, obtenemos su tabla de frecuencias absolutas, con las variables ordenadas tal y como aparecen en el data frame.
+```{r}
+table(Beb_Energ) #tabla de frec. abs. de todo el df
+
+table(Beb_Energ[c(1,3)]) #tabla de frec.abs. del sub data frame de las columnas 1(estudio) y 3(sexo), dejando de lado si bebe(2)
+```
+
+```{r}
+ftable(Beb_Energ)
+```
+
+
+
+
+
+
+
+

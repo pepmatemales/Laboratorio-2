@@ -62,9 +62,9 @@ Orange
 
 
 ```{r}
-#datos = read.table("")
+#dades = read.table("")
 
-#datos
+#dades
 ```
 
 

@@ -1,0 +1,139 @@
+---
+title: "Tema7"
+author: "Pep Matemales"
+date: "29/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Estadistica descriptiva con datos ordinales
+En datos ordinales, a parte de las frecuencias absolutas y relativas, podemos calcular las frecuencias acumuladas.
+Es decir, podemos contar cuantas veces hemos observado un dato menor o igual a este.
+
+Y tambien tenemos la frecuencia relativa acumulada. Es la fracción del total de las observaciones en tanto por 1 que representa su frecuencia absoluta acumulada
+
+```{r}
+notas = ordered(c("S","A", "N", "Ex", "S", "S", "Ex", "Ex", "N", "A", "A", "A",
+                  "A", "N", "S"), levels = c("S", "A", "N", "Ex"))
+table(notas) #para saber cuantas hay de cada una (su frecuencia absoluta)
+```
+OBSERVEMOS QUE:
+En lo referente a frecuencias absolutas acumuladas, hay
+4 estudiantes con S o menos. Ello implica que la frecuencia acumulada de S es 4
+9 estudiantes que han obtenido A o menos. Entonces, la frecuencia acumulada de A es 9
+12 estudiantes los cuales han obtenido N o menos. Así, la frecuencia acumulada de N es 12
+15 estudiantes (todos) que han obtenido Ex o menos. De este modo, la frecuencia acumulada de Ex es 15, o sea, el total.
+
+Así, las recuencias relativas acumuladas respectivas son
+
+S: 4/15≈ 0.27
+A: 9/15≈ 0.6
+N: 12/15≈ 0.8
+Ex: 15/15=1
+
+
+## Tablas de frecuencias
+
+```{r}
+notas
+fAbs = table(notas) #Frec. abs.
+fAbs
+prop.table(fAbs) #Frec. relativas
+
+cumsum(fAbs) #Frec. abs. acumuladas
+cumsum(prop.table(fAbs)) #Frec. relativas acumuladas
+```
+
+```{r}
+barplot(fAbs, main = "Diagrama de barras de frecuencias absolutas")
+barplot(cumsum(fAbs), main = "Diagrama de barras de frecuencias absolutas acumuladas")
+```
+
+
+
+## Ejemplo
+Se ha evaluado el tamaño de los cuellos de 100 jirafas. Los niveles que se han utilizado se los considera ordenados de la siguiente manera:
+
+Muy.corto<Corto<Normal<Largo<Muy.largo
+Los valores obtenidos en dicho estudio han sido los siguientes
+
+```{r}
+longitud=ordered(sample(c("Muy.corto","Corto","Normal","Largo","Muy.largo"), 100,
+                          replace=TRUE),
+                 levels=c("Muy.corto","Corto","Normal","Largo","Muy.largo"),
+                 )
+longitud
+```
+
+```{r}
+#Estudiemos sus frecuencias
+Fr.Abs = table(longitud)
+Fr.Abs
+Fr.Rel = prop.table(Fr.Abs)
+Fr.Rel
+
+Fr.Acum = cumsum(Fr.Abs)
+Fr.Acum
+Fr.RAcum = cumsum(Fr.Rel)
+Fr.RAcum
+
+barplot(Fr.RAcum, main = "Diagrama de frecuencias relativas acumuladas")
+```
+
+## Tablas multidimensionales
+
+```{r}
+zonas = rep(c("A","B","C","D"), c(30,25,35,10))
+jirafas = data.frame(zonas,longitud)
+str(jirafas)
+head(jirafas)
+```
+
+```{r}
+table(jirafas)
+prop.table(table(jirafas)) #relativas globales
+prop.table(table(jirafas), margin = 1) #relativas de las longitudes por zonas
+
+
+apply(table(jirafas), MARGIN = 1, FUN=cumsum) #Para calcular la tabla de frecuencias absolutas acumuladas de las longitudes por zonas (como las zonas definen las filas de la tabla anterior, debemos utilizar la función apply con MARGIN = 1)
+
+# OJO!! Fijaos que la tabla se ha traspuesto. Resulta que cuando se aplica apply a una table bidimensional, R intercambia, en caso de ser necesario, filas por columnas en el resultado para que la dimensión de la tabla resultante en la que se haya aplicado la función sea la de las columnas.
+t(apply(table(jirafas), MARGIN = 1, FUN = cumsum)) #Con lo cual, para volver a tener las zonas en las filas, hay que trasponer el resultado de la función apply.
+
+t(apply(prop.table(table(jirafas), margin = 1), MARGIN = 1, FUN = cumsum)) #Para calcular la tabla de frecuencias relativas acumuladas de las longitudes por zonas
+
+
+
+
+apply(table(jirafas), MARGIN = 2, FUN=cumsum) #Tabla de frecuencias abs acumuladas de las zonas por longitudes (no tiene nada de sentido pq no existe un orden entre A,B,C,D entonces no se deberia estudiar su frec. acumulada)
+
+```
+
+
+## Graficos con datos ordinales
+Usando el ejemplo anterior...
+Vamos ahora a dibujar el diagrama de barras por bloques de esta tabla. Nos interesa que las barras de este diagrama se agrupen por zonas. Entonces, tendremos que aplicar barplot a la tabla sin trasponer.
+Además, vamos a colocar la leyenda en la esquina superior izquierda para que no se superponga a ninguna barra. También reduciremos el tamaño del texto de la leyenda para que quepa completamente.
+
+```{r}
+Diagrama = apply(prop.table(table(jirafas), margin = 1), MARGIN = 1, FUN = cumsum) #tabla de frec rel acumuladas de las longitudes por zonas.
+Diagrama
+
+barplot(Diagrama, beside = TRUE, legend = TRUE, main = "Diagrama de barras de 
+        frecuencias relativas acumuladas de longitudes por zonas",
+args.legend=list(x="topleft", cex=0.55))
+```
+
+
+##aqui falta el video 110 (convertir datos cualitativos en ordinales)
+
+
+
+
+
+
+
+

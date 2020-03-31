@@ -1,0 +1,51 @@
+---
+title: "Tema6-3"
+author: "Pep Matemales"
+date: "29/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Tablas ya creadas por R (Ejemplo HairEyeColor) (no esta en apuntes)
+
+
+```{r}
+HairEyeColor
+
+sum(HairEyeColor) # total de individuos de la tabla de datos
+```
+
+```{r}
+prop.table(HairEyeColor, margin = 3) # Frec. Rel. Marginal por Sexo
+prop.table(HairEyeColor, margin = c(1,2))# Frec. Rel. Marginal por Pelo y Ojos
+```
+
+```{r}
+aperm(HairEyeColor, perm = c("Sex", "Hair", "Eye"))
+```
+
+```{r}
+library(kableExtra)
+kable(HairEyeColor)
+```
+
+```{r, results='asis'}
+library(xtable)
+sex = factor(c("H", "M", "M", "M", "H", "H", "M", "M"))
+ans = factor(c("S", "N", "S", "S", "S", "N", "N", "S"))
+
+xtable(table(sex, ans)) # a mi no me funciona
+```
+
+
+
+
+
+
+
+
+
+

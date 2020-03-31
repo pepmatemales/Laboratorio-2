@@ -1,0 +1,301 @@
+---
+title: "Tema8"
+author: "Pep Matemales"
+date: "30/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Estadistica descriptiva con datos cuantitativos (Sin agrupar, es decir RowData/datos brutos)
+
+## Introduccion
+Los datos cuantitativos de suelen clasificar en:
+
+  -Los datos continuos son los que, si existiese la posibilidad de medirlos con precisión infinita, en principio podrían tomar todos los valores de un intervalo de la recta real. A modo de ejemplo, el peso, la altura, el tiempo… son datos de este tipo.
+  -Por su parte, los datos discretos son los que pueden tomar un solo conjunto contable de valores. El número de colores de un gato, el número de individuos que conforman una población son algunos ejemplos de este tipo de datos.
+
+Esto hara que los graficos que utilizamos para representarlos seran diferentes
+
+
+A la hora de estudiar variables cuantitativas, podemos utilizar las frecuencias que hemos visto hasta el momento: absoluta, relativa, acumulada y relativa acumulada. Esto se debe a que podemos ordenar los datos cuantitativos en el orden natural de los números reales.
+En este caso, disponemos de muchas otras técnicas descriptivas aparte de las frecuencias, puesto que estamos trabajando con números reales y podemos operar con ellos.
+
+Por último (IMPORTANTE)
+Los datos cuantitativos admiten dos tipos de tratamiento según trabajemos con los raw data (datos brutos u originales) o bien los agrupemos en clases o intervalos.
+
+
+
+
+## Frecuencias
+
+El tratamiento de las frecuencias de datos cuantitativos es similar al de los datos ordinales. La cosa cambia ligeramente debido a que no se tienen en cuenta todos los niveles posibles, sino únicamente los observados.
+```{r}
+edad = c(15,18,25,40,30,29,56,40,13,27,42,23,11,26,25,32,30,40,33,29)
+table(edad) #frec. abs
+round(prop.table(table(edad)),3) #frec rel
+cumsum(table(edad)) #frec abs acumuladas
+round(cumsum(prop.table(table(edad))),3) #frec rel acumuladas
+```
+
+### Otro ejemplo
+```{r}
+set.seed(111)
+dados = sample(1:6,25,replace = TRUE)
+dados
+set.seed(NULL)
+table(dados)
+round(prop.table(table(dados)),2)
+cumsum(table(dados))
+round(cumsum(prop.table(table(dados))),2)
+```
+
+```{r}
+dados.df = data.frame(Puntuacion = 1:6,
+                      Fr.abs = as.vector(table(dados)),
+                      Fr.rel = as.vector(round(prop.table(table(dados)),2)),
+                      Fr.acu = as.vector(cumsum(table(dados))),
+                      Fr.racu = as.vector(round(cumsum(prop.table(table(dados))),2)))
+str(dados.df)
+dados.df
+```
+
+
+
+
+
+
+## Medidas de centralización
+Media, mediana y moda + MarkdownTema8-2(MasMedias)
+```{r}
+edad
+mean(edad) #La media aritmética
+median(edad) #La mediana
+as.numeric(names(which(table(edad)==max(table(edad))))) #La moda
+
+## OJO, Cuando trabajamos con datos cuantitativos, es conveniente que el resultado lo demos como un número. De ahí que hayamos aplicado la función as.numeric.
+
+
+dados
+mean(dados)
+median(dados)
+as.numeric(names(which(table(dados)==max(table(dados)))))
+
+```
+
+
+
+
+
+
+
+
+
+
+## Medidas de posción
+
+-Las medidas de posición estiman qué valores dividen las observaciones en unas determinadas proporciones.
+-Los valores que determinan estas posiciones son conocidos como los cuantiles.
+-Pensándolo de este modo, la mediana puede interpretarse como una medida de posición, debido a que divide la variable cuantitativa en dos mitades.
+
+### Cuantil
+
+-Dada una proporción p∈(0,1), el cuantil de orden p de una variable cuantitativa, Qp, es el valor más pequeño tal que su frecuencia relativa acumulada es mayor o igual a p.
+-Así, ahora es más claro ver que la mediana vendría a ser Q0.5, el cuantil de orden 0.5.
+
+```{r}
+set.seed(123)
+dado = sample(1:4, 50, replace = TRUE)
+length(dado)
+dado = sort(dado) #Los ordenamos de menor a mayor
+dado
+df.dado = data.frame(Puntuacion = 1:4,
+                      Fr.abs = as.vector(table(dado)),
+                      Fr.rel = as.vector(round(prop.table(table(dado)),2)),
+                      Fr.acu = as.vector(cumsum(table(dado))),
+                      Fr.racu = as.vector(round(cumsum(prop.table(table(dado))),2)))
+set.seed(NULL)
+```
+
+```{r}
+df.dado #Observemos aqui que si nos piden el cuantil Q0.3, sabemos que este es el primer elemento de la lista cuya frecuencia relativa acumulada es mayor o igual a 0.3. En nuestro caso es el 2 (Con la semilla que hemos puesto).
+
+#También podríamos hallarlo de otro modo: fijándonos en la lista ordenada de puntuaciones, el cuantil Q0.3 sería el primer elemento de dicha lista tal que fuera mayor o igual que, como mínimo, el 30% de los datos. Si calculamos el 30% de 50, obtenemos que es 15. Esto lo que nos dice es que el cuantil que buscamos es el número que se encuentrae en la quinceava posición de la lista ordenada.
+dado[15]
+```
+
+### Cuantiles especiales
+-Cuartiles: Q_0.25,Q_0.5  y Q_0.75. Respectivamente, son llamados primer, segundo y tercer cuartil.
+-El cuantil Q_0.5 es la mediana
+-Los deciles son los cuantiles Q_p con p un múltiplo de 0.1.
+-Los percentiles son son los cuantiles Q_p con p un múltiplo de 0.01.
+
+```{r}
+set.seed(0)
+dados2 = sample(1:6,15, replace = TRUE)
+dados2
+set.seed(NULL)
+quantile(dados2,0.25) #Primer cuartil
+quantile(dados2,0.8)
+```
+
+
+
+
+
+
+## Medidas de dispersion
+Para saber lo dispersos que estan los datos:
+-Rango/Recorrido: Diferencia entre max y min
+
+-Rango intercuartílico: Diferencia entre tercer y primer cuartil
+
+-Varianza: a la que denotaremos por s2, es la media aritmética de las diferencias al cuadrado entre los datos xi y la media aritmética de las observaciones, x¯.
+-La desviación típica es la raíz cuadrada positiva de la varianza, s=sqrt(s2)
+
+-La varianza muestral es la corrección de la varianza. Es igual a la varianza pero dividiendo por n-1 en lugar de n.
+-La desviación típica muestral, que es la raíz cuadrada positiva de la varianza muestral, s~=sqrt(s~2)
+
+FUNCIONES EN R:
+```{r}
+dados2
+range(dados2) #Valores mínimo y máximo
+diff(range(dados2)) #Rango
+
+IQR(dados2) #Rango intercuartilico
+
+var(dados2) #Varianza muestral
+sd(dados2) #Desviación típica muestral
+
+n = length(dados2)
+var(dados2)*(n-1)/n #Varianza
+sd(dados2)*sqrt((n-1)/n) #Desv tipica
+```
+
+
+
+
+## Funcion summary
+-La función summary aplicada a un vector numérico o a una variable cuantitativa nos devuelve un resumen estadístico con los valores mínimo y máximo del vector, sus tres cuartiles y su media.
+-Al aplicar esta función a un data frame, esta se aplica a todas sus variables de forma simultánea. De este modo, podemos observar rápidamente si hay diferencias notables entre sus variables numéricas
+```{r}
+cangrejos = read.table("data/datacrab.txt", header = TRUE) #Cargamos el data frame
+cangrejos = cangrejos[-1] #Eliminamos la primera columna
+summary(cangrejos) #Aplicamos la función summary
+```
+
+```{r} 
+# Se puede aplicar el summary a un sub data frame
+
+#Si nos interesase comparar numéricamente los pesos y las anchuras de los cangrejos con 3 colores con los que tienen 5 colores, utilizaríamos las siguientes instrucciones
+subset(cangrejos, color == 3,c("weight","width"))
+summary(subset(cangrejos, color == 3,c("weight","width"))) #Peso y anchura de los cangrejos de color 3
+
+#Este hace lo mismo
+cangrejos[cangrejos$color==3,c("weight","width")]
+summary(cangrejos[cangrejos$color==3,c("weight","width")])
+
+summary(subset(cangrejos, color == 5,c("weight","width"))) #Peso y anchura de los cangrejos de color 5
+
+#Y deducimos así que los cangrejos con 5 colores pesan ligeramente menos y tienen menos anchura que los que tienen 3 colores.
+
+```
+
+### Funcion by
+-La función by() se utiliza para aplicar una determinada función a algunas columnas de un data frame segmentándolas según los niveles de un factor.
+-La sintaxis de esta función es by(columnas, factor, FUN = función).
+-Con lo cual, haciendo uso de la función by y especificando FUN = summary, podremos calcular el resumen estadístico anteriormente comentado a subpoblaciones definidas por los niveles de un factor.
+```{r}
+#Si nos interesase calcular de forma rápida y sencilla las longitudes de sépalos y petalos en función de la especie, necesitaríamos hacer uso de la instrucción mostrada a continuación.
+by(iris[,c(1,3)], iris$Species, FUN = summary)
+```
+
+### Funcion aggregate
+Tanto la función by como la función aggregate son equivalentes. No obstante, los resultados se muestran de forma diferente en función de cual utilicemos
+```{r}
+aggregate(cbind(Sepal.Length,Petal.Length)~Species, data=iris, FUN=summary) #en este caso sale una cosa un poco fea
+```
+
+
+
+
+
+
+
+## Ojo los NA
+```{r}
+x = c(1,2,3,NA)
+sum(x)
+sum(x, na.rm = TRUE)
+mean(x)
+mean(x, na.rm = TRUE)
+var(x)
+var(x, na.rm = TRUE)
+sd(x)
+sd(x, na.rm = TRUE)
+```
+
+
+
+
+
+# Graficos para datos cuantitativos
+
+
+## Diagrama de caja y bigotes
+ver video 121 para saber que es cada cosa del grafico
+```{r}
+dados2
+summary(dados2)
+boxplot(dados2, main = "Un diagrama de caja")
+```
+
+```{r}
+dado
+dados
+dados2
+boxplot(dado,dados,dados2) #boxplot para mas de un vector
+```
+
+### Boxplot de un data frame
+```{r}
+body = read.table("data/bodyfat.txt", header = TRUE)
+boxplot(body)
+boxplot(body[,7:9], names = c("Pecho", "Abdomen", "Cadera"))
+```
+
+-La mayoría de las veces, querremos comparar diagramas de cajas de una misma variable cuantitativa segmentada por los niveles de un factor.
+-La sintaxis de la instrucción para dibujar en un único gráfico los diagramas de caja de una variable numérica de un data frame en función de los niveles de un factor del mismo data frame es boxplot(var.numérica~factor, data = data frame)
+```{r}
+boxplot(circumference~Tree, data = Orange, ylab = "Circunferencia del tronco (mm)", 
+        main = "Boxplot de los naranjos en función del tipo de árbol",
+        col="lightblue")
+
+boxplot(Sepal.Width~Species, data = iris, ylab = "Anchura del sétalo (cm)",
+        notch = TRUE, col = c("cyan","cyan2","cyan4"),
+        main = "Boxplot de iris")
+```
+
+
+Si quisiéramos marcar de alguna forma en un diagrama de caja, cosa que puede ser muy útil en ocasiones, la media aritmética de la variable correspondiente, podríamos hacerlo mediante la función points:
+```{r}
+boxplot(Sepal.Width~Species, data = iris, ylab = "Anchura del sétalo (cm)")
+medias = aggregate(Sepal.Width~Species, data = iris, FUN = mean)
+medias
+points(medias, col = "pink", pch = 15)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
